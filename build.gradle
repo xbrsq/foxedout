@@ -28,7 +28,6 @@ loom {
 		}
 	}
 
-//	accessWidenerPath = file("src/client/java/xbrsq/accessors/bossbarlist.accesswidener")
 }
 
 loom {

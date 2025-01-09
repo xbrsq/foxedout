@@ -23,19 +23,11 @@ public class FoxedoutClient implements ClientModInitializer {
 
 	public static boolean doRender = true;
 
-//	private static ArrayList<String[]> Texts = new ArrayList<String[]>();
 
 	public static void setPos(int x, int y){
 		X = x;
 		Y = y;
 	}
-
-//	public static void addText(String[] strs){
-//		Texts.add(strs);
-//	}
-//	public static void setTexts(ArrayList<SkillEntry> skillEntries){
-//		Texts = texts;
-//	}
 
 	@Override
 	public void onInitializeClient() {
