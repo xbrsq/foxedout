@@ -42,9 +42,9 @@ public class FoxedoutClient implements ClientModInitializer {
 			if(!doRender) return;
 			if (textRenderer != null) {
 				// textRenderer exists, so you can use it
-				context.drawText(textRenderer, "Skills:",	X+00, Y,		0xDDDDDD,	true);
-				context.drawText(textRenderer, "Level:",	X+60, Y,		0xDDDDDD,	true);
-				context.drawText(textRenderer, "XP:",		X+100, Y,	0xDDDDDD,	true);
+				context.drawText(textRenderer, "Skills:",	   X,		Y,		0xDDDDDD,	true);
+				context.drawText(textRenderer, "Level:",	X+60,	Y,		0xDDDDDD,	true);
+				context.drawText(textRenderer, "XP:",		X+100,	Y,	0xDDDDDD,	true);
 
 				int linenum = 1;
 				ArrayList<SkillEntry> skills = SkillSorter.sort(SkillTracker.getSkills(), sorting);

@@ -4,10 +4,11 @@ import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.hud.ChatHud;
 import net.minecraft.text.Text;
 import java.util.ArrayList;
+import java.util.Arrays;
 
 public class ChatSender {
     private static ChatHud chatHud;
-    private static ArrayList<String> messageBuffer = new ArrayList<String>();
+    private static final ArrayList<String> messageBuffer = new ArrayList<>();
 
     public static void fakeRecieve(String message){
         if(chatHud == null){
@@ -25,9 +26,7 @@ public class ChatSender {
         messageBuffer.add(message);
     }
     public static void bufferMessages(String[] messages){
-        for(String s: messages){
-            messageBuffer.add(s);
-        }
+        messageBuffer.addAll(Arrays.asList(messages));
     }
 
     public static boolean isOnline(){

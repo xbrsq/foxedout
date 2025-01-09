@@ -7,7 +7,7 @@ import java.util.regex.Pattern;
 import java.util.regex.Matcher;
 
 public class SkillTracker {
-    private static Map<String, SkillEntry> skills = new HashMap<String, SkillEntry>();
+    private static final Map<String, SkillEntry> skills = new HashMap<>();
 
     public static ChatContext chatMode = ChatContext.NORMAL;
 
@@ -130,9 +130,7 @@ public class SkillTracker {
             int level = SkillTracker.parseCommaedInt(matcher.group(2));
 
             SkillTracker.updateSkillXP(skillName, level, percent);
-            return;
         }
-//        System.out.println("No Match: ["+name+"]");
     }
 
     public static ArrayList<SkillEntry> getSkills(boolean forceAll){

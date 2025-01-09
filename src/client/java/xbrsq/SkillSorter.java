@@ -35,9 +35,6 @@ public class SkillSorter {
 
 
 
-//        boolean[] completed = new boolean[skills.size()];
-
-//        int currentLowest = 0;
 
         rtrn.add(skills.removeFirst()); // needs to start with 1 element in rtrn to compare with
 
@@ -45,13 +42,6 @@ public class SkillSorter {
         for (SkillEntry skill : skills) {
             pos = rtrn.size();
             for (int j = 0; j < rtrn.size(); j++) {
-//                if(!completed[j]) {
-//                    if (compare(skills.get(j), skills.get(currentLowest), sortBy) < 0) {
-//                        currentLowest = j;
-//                    }
-//                }
-
-
                 // i is what to insert
                 // j is what to compare to
                 if (compare(skill, rtrn.get(j), sortBy)*(sortBy>=0?1:-1) <= 0) {
@@ -61,8 +51,6 @@ public class SkillSorter {
             }
             rtrn.add(pos, skill);
 
-//            completed[currentLowest] = true;
-//            rtrn.add(skills.get(currentLowest));
         }
 
         return rtrn;
@@ -77,7 +65,7 @@ public class SkillSorter {
             case S_TIME*S_TIME -> Long.compare(a.time, b.time);
             default -> 0;
         };
-    };
+    }
 
 
 }
