@@ -9,6 +9,7 @@ import java.util.Arrays;
 public class ChatSender {
     private static ChatHud chatHud;
     private static final ArrayList<String> messageBuffer = new ArrayList<>();
+    private static final ArrayList<String> sendBuffer = new ArrayList<>();
 
     public static void fakeRecieve(String message){
         if(chatHud == null){
@@ -20,6 +21,21 @@ public class ChatSender {
             }
         }
         chatHud.addMessage(Text.of(message));
+    }
+
+    public static void broadcastCommand(String command){
+        if(MinecraftClient.getInstance().player == null){
+            bufferMessage("player is null.");
+            return;
+        }
+        MinecraftClient.getInstance().player.networkHandler.sendChatCommand(command);
+    }
+    public static void broadcastMessage(String message){
+        if(MinecraftClient.getInstance().player == null){
+            bufferMessage("player is null.");
+            return;
+        }
+        MinecraftClient.getInstance().player.networkHandler.sendChatMessage(message);
     }
 
     public static void bufferMessage(String message){
@@ -46,6 +62,7 @@ public class ChatSender {
             return;
         }
         while(!messageBuffer.isEmpty()){
+            System.out.println("> "+messageBuffer.getFirst());
             fakeRecieve(messageBuffer.removeFirst());
         }
     }

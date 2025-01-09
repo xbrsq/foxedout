@@ -51,6 +51,7 @@ public class CustomCommands {
 
         switch(parsedMessage[0].toLowerCase()){
             // main commands
+            case "?":
             case "help": {
                 int page = 1;
                 if (assertIntegerArgument(parsedMessage, 0, false)) {
@@ -185,7 +186,13 @@ public class CustomCommands {
                         message("Unknown sorting: "+parsedMessage[1]);
                         return disableIntercept;
                 }
-                if(s<0){
+
+                // war crime equality checking:
+                if(s==0 || (((FoxedoutClient.sorting>=0)?(FoxedoutClient.sorting):(-FoxedoutClient.sorting))==s)){
+                    message("Already sorting this way");
+                    return disableIntercept;
+                }
+                else if(s<0){
                     FoxedoutClient.sorting *= -1;
                 }
                 else {
@@ -198,6 +205,22 @@ public class CustomCommands {
                 message("Sorting: "+parsedMessage[1].toLowerCase());
                 return disableIntercept;
             }
+            case "refresh":
+            case "stats": {
+                ChatSender.broadcastCommand("stats");
+                return disableIntercept;
+            }
+            case "inspect":
+            case "lookup":
+                ChatSender.broadcastCommand("mcinspect "+parsedMessage[1]);
+                return disableIntercept;
+
+
+            // for dev only, because I keep forgetting to break after the last main command
+            // if you see this, something went quite wrong
+            case " oops, forgot the return":
+                message("YOU FORGOT TO BREAK OUT OF THE RETURN, MADAM DUMBASS");
+                break;
 
             // utility
             case "crash": {
@@ -212,7 +235,7 @@ public class CustomCommands {
                 message("OwO, what's this?");
                 return STOP;
             }
-            case " ": {
+            case " to avoid compiler warnings": {
                 // inaccessable, to avoid compiler error of unreachable code after switch.
                 break;
             }
