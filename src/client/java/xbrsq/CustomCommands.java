@@ -1,5 +1,7 @@
 package xbrsq;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.util.ArrayList;
 
 public class CustomCommands {
@@ -22,6 +24,7 @@ public class CustomCommands {
             prefix+"clearcache: clears the skill cache.",
             prefix+"focus <skill|'clear'>: only shows selected skill.",
             prefix+"highlight <skill|'clear'>: highlights skill.",
+            prefix+"sort <field|'asc'|'desc'>: sorts based on field, ascending or descending.",
 
             prefix+"owo: what's this?",
             prefix+"crash: crashes the game. For debug purposes only.",
@@ -31,7 +34,7 @@ public class CustomCommands {
     // disable to force all chat messages to be allowed through
     public static boolean disableIntercept = STOP;
 
-    public static boolean parseMessage(String rawMessage){
+    public static boolean parseMessage(@NotNull String rawMessage){
         // returns whether to allow message
         if(!rawMessage.startsWith(prefix)){
             return PASS;
@@ -125,6 +128,46 @@ public class CustomCommands {
                 }
                 se.highlighted = !se.highlighted;
                 message(se.name + " is now " + (se.highlighted ? "" : "not ") + "highlighted");
+                return disableIntercept;
+            }
+            case "sort": {
+                if (!assertArgNumber(parsedMessage, 1, true)) {
+                    return disableIntercept;
+                }
+                switch(parsedMessage[1].toLowerCase()){
+                    case "none":
+                        FoxedoutClient.sorting = SkillSorter.S_NONE;
+                        break;
+                    case "name":
+                        FoxedoutClient.sorting = SkillSorter.S_NAME;
+                        break;
+                    case "level":
+                        FoxedoutClient.sorting = SkillSorter.S_LEVEL;
+                        break;
+                    case "percent":
+                        FoxedoutClient.sorting = SkillSorter.S_PERCENT;
+                        break;
+                    case "time":
+                        FoxedoutClient.sorting = SkillSorter.S_TIME;
+                        break;
+                    case "asc":
+                        parsedMessage[1] = "ascending";
+                        if(FoxedoutClient.sorting<0){
+                            FoxedoutClient.sorting *= -1;
+                        }
+                        break;
+                    case "desc":
+                        parsedMessage[1] = "descending";
+                        if(FoxedoutClient.sorting>0){
+                            FoxedoutClient.sorting *= -1;
+                        }
+                        break;
+                    default:
+                        message("Unknown sorting: "+parsedMessage[1]);
+                        return disableIntercept;
+                }
+
+                message("Sorting: "+parsedMessage[1].toLowerCase());
                 return disableIntercept;
             }
 

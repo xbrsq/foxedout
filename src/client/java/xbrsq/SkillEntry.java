@@ -5,6 +5,7 @@ public class SkillEntry {
     public int level;
     public int xp;
     public int maxxp;
+    public long time;
     public boolean highlighted;
 
     public SkillEntry(String name, int level, int xp, int maxxp){

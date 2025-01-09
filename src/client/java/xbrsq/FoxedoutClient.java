@@ -4,7 +4,6 @@ import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
 import net.fabricmc.fabric.api.client.message.v1.ClientSendMessageEvents;
 import net.fabricmc.fabric.api.client.rendering.v1.HudRenderCallback;
-import net.fabricmc.fabric.api.entity.event.v1.EntityElytraEvents;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.font.TextRenderer;
 import net.minecraft.client.gui.DrawContext;
@@ -20,6 +19,8 @@ public class FoxedoutClient implements ClientModInitializer {
 	public static int Y = 10;
 	public static int lineSize = 10;
 	public static boolean hideSkillMessages = false;
+
+	public static int sorting = SkillSorter.S_NAME;
 
 	public static boolean doRender = true;
 
@@ -45,13 +46,15 @@ public class FoxedoutClient implements ClientModInitializer {
 				context.drawText(textRenderer, "XP:",		X+100, Y,	0xDDDDDD,	true);
 
 				int linenum = 1;
-                for (SkillEntry entry : SkillTracker.getSkills()) {
+				ArrayList<SkillEntry> skills = SkillSorter.sort(SkillTracker.getSkills(), sorting);
+				for (SkillEntry entry : skills) {
 					int entryColor = entry.highlighted?0xFFFFFF:0xDDDDDD;
 					context.drawText(textRenderer, entry.name, X, Y + (lineSize*linenum), entryColor, true);
 					context.drawText(textRenderer, String.valueOf(entry.level), X+65, Y + (lineSize*linenum), entryColor, true);
 					context.drawText(textRenderer, entry.getPercent() + "%", X + 100, Y + (lineSize * linenum), getPercentageColor(entry.getPercent()), true);
 					linenum++;
-                }
+				}
+
 			} else {
 				// create textRenderer
 				System.err.println("TextRenderer is null! Attempting to set it.");

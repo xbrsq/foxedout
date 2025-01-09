@@ -13,6 +13,7 @@ public class SkillTracker {
 
     public static String focus = "";
 
+    public static long currentTime = 0L;
 
 
     public static void updateSkill(String skill, Integer level){
@@ -28,6 +29,7 @@ public class SkillTracker {
             return;
         }
         SkillEntry temp = new SkillEntry(skill, new int[]{level, xp, xpMax});
+        temp.time = currentTime++;
         skills.put(skill, temp);
     }
 
@@ -38,11 +40,13 @@ public class SkillTracker {
         // also, I'm lazy, so it will wipe the highlight.
 
         SkillEntry temp = new SkillEntry(skill, new int[]{level, (int) (percent * 100), 100, 0});
+        temp.time = currentTime++;
         skills.put(skill, temp);
     }
 
     public static void clearSkills(){
         skills.clear();
+        currentTime = 0L;
     }
 
 
