@@ -20,7 +20,7 @@ public class FoxedoutClient implements ClientModInitializer {
 	public static int lineSize = 10;
 	public static boolean hideSkillMessages = false;
 
-	public static int sorting = SkillSorter.S_NAME;
+	public static int sorting = SkillSorter.S_NONE*SkillSorter.M_ASC;
 
 	public static boolean doRender = true;
 

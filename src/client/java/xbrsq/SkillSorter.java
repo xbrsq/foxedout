@@ -9,6 +9,9 @@ public class SkillSorter {
     public static final int S_TIME = 4;
     public static final int S_NONE = 5;
 
+    public static final int M_ASC = 1;
+    public static final int M_DESC = -1;
+
     public static int default_sorting = S_NAME;
 
     public static ArrayList<SkillEntry> sort(ArrayList<SkillEntry> skills){return sort(skills, default_sorting);}
@@ -18,8 +21,13 @@ public class SkillSorter {
             return new ArrayList<>();
         }
 
-        if(sortBy == S_NONE){
+        if(sortBy == S_NONE * M_ASC){
             return new ArrayList<>(skills);
+        }
+        if(sortBy == S_NONE * M_DESC){
+            ArrayList<SkillEntry> r = new ArrayList<>(skills.size());
+            r.addAll(skills.reversed());
+            return r;
         }
 
 
@@ -70,7 +78,6 @@ public class SkillSorter {
             default -> 0;
         };
     };
-
 
 
 }

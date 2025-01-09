@@ -15,23 +15,24 @@ public class CustomCommands {
         {
             "prefix for all commands: \"" + prefix + "\"",
             "",
-            prefix + "help: shows this page",
-            prefix + "movex: move skills display horizontal position",
-            prefix + "movey: move skills display vertical position",
+            prefix + "help [page]: shows help page",
+            prefix + "movex <x>: move skills display horizontal position",
+            prefix + "movey <y>: move skills display vertical position",
             prefix + "render: toggle skills display rendering",
             prefix + "intercept: toggle whether commands are sent to other players",
-                prefix+"skillmessages: toggle whether skill messages are shown",
+            prefix+"skillmessages: toggle whether skill messages are shown",
         },
         {
             prefix+"clearcache: clears the skill cache.",
-            prefix+"focus <skill|'clear'>: only shows selected skill.",
-            prefix+"highlight <skill|'clear'>: highlights skill.",
-            prefix+"sort <field|'asc'|'desc'>: sorts based on field, or sets",
+            prefix+"focus <skill | 'clear'>: only shows selected skill.",
+            prefix+"highlight <skill | 'clear'>: highlights skill.",
+            prefix+"sort <field | 'asc' | 'desc'>: sorts based on field, or sets",
                 "sorting direction.",
             prefix + "owo: what's this?",
             prefix + "crash: crashes the game. For debug purposes only.",
         },
         {
+            ""
         }
     };
 
@@ -149,37 +150,49 @@ public class CustomCommands {
                 if (!assertArgNumber(parsedMessage, 1, true)) {
                     return disableIntercept;
                 }
+                
+                int s = 0;
                 switch(parsedMessage[1].toLowerCase()){
                     case "none":
-                        FoxedoutClient.sorting = SkillSorter.S_NONE;
+                        s = SkillSorter.S_NONE;
                         break;
                     case "name":
-                        FoxedoutClient.sorting = SkillSorter.S_NAME;
+                        if(FoxedoutClient.sorting<0)
+                            s = SkillSorter.S_NAME;
                         break;
                     case "level":
-                        FoxedoutClient.sorting = SkillSorter.S_LEVEL;
+                        s = SkillSorter.S_LEVEL;
                         break;
                     case "percent":
-                        FoxedoutClient.sorting = SkillSorter.S_PERCENT;
+                        s = SkillSorter.S_PERCENT;
                         break;
                     case "time":
-                        FoxedoutClient.sorting = SkillSorter.S_TIME;
+                        s = SkillSorter.S_TIME;
                         break;
                     case "asc":
                         parsedMessage[1] = "ascending";
                         if(FoxedoutClient.sorting<0){
-                            FoxedoutClient.sorting *= -1;
+                            s = -1;
                         }
                         break;
                     case "desc":
                         parsedMessage[1] = "descending";
                         if(FoxedoutClient.sorting>0){
-                            FoxedoutClient.sorting *= -1;
+                            s = -1;
                         }
                         break;
                     default:
                         message("Unknown sorting: "+parsedMessage[1]);
                         return disableIntercept;
+                }
+                if(s<0){
+                    FoxedoutClient.sorting *= -1;
+                }
+                else {
+                    if(FoxedoutClient.sorting<0){
+                        s = -s;
+                    }
+                    FoxedoutClient.sorting = s;
                 }
 
                 message("Sorting: "+parsedMessage[1].toLowerCase());
