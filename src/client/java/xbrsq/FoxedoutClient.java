@@ -20,23 +20,22 @@ public class FoxedoutClient implements ClientModInitializer {
 	public static int Y = 10;
 	public static int lineSize = 10;
 	public static boolean hideSkillMessages = false;
-	public static int mode = 0;
 
 	public static boolean doRender = true;
 
-	private static ArrayList<String[]> Texts = new ArrayList<String[]>();
+//	private static ArrayList<String[]> Texts = new ArrayList<String[]>();
 
 	public static void setPos(int x, int y){
 		X = x;
 		Y = y;
 	}
 
-	public static void addText(String[] strs){
-		Texts.add(strs);
-	}
-	public static void setTexts(ArrayList<String[]> texts){
-		Texts = texts;
-	}
+//	public static void addText(String[] strs){
+//		Texts.add(strs);
+//	}
+//	public static void setTexts(ArrayList<SkillEntry> skillEntries){
+//		Texts = texts;
+//	}
 
 	@Override
 	public void onInitializeClient() {
@@ -49,15 +48,15 @@ public class FoxedoutClient implements ClientModInitializer {
 			if(!doRender) return;
 			if (textRenderer != null) {
 				// Safe to call methods on textRenderer
-				int linenum = 0;
-                for (String[] text : Texts) {
-					context.drawText(textRenderer, text[0], X+000, Y + (lineSize*linenum), 0xFFFFFFFF, true);
-					context.drawText(textRenderer, text[1], X+65, Y + (lineSize*linenum), 0xFFFFFFFF, true);
-					if(linenum==0){
-						context.drawText(textRenderer, text[2], X+110, Y, 0xFFFFFFFF, true);
-					}else {
-						context.drawText(textRenderer, text[2] + "%", X + 110, Y + (lineSize * linenum), getPercentageColor(text[2]), true);
-					}
+				context.drawText(textRenderer, "Skills:",	X+00, Y,		0xFFFFFFFF,	true);
+				context.drawText(textRenderer, "Level:",	X+60, Y,		0xFFFFFFFF,	true);
+				context.drawText(textRenderer, "XP:",		X+100, Y,	0xFFFFFFFF,	true);
+
+				int linenum = 1;
+                for (SkillEntry entry : SkillTracker.getSkills()) {
+					context.drawText(textRenderer, entry.name, X+000, Y + (lineSize*linenum), 0xFFFFFFFF, true);
+					context.drawText(textRenderer, String.valueOf(entry.level), X+65, Y + (lineSize*linenum), 0xFFFFFFFF, true);
+					context.drawText(textRenderer, String.valueOf(entry.getPercent()) + "%", X + 100, Y + (lineSize * linenum), getPercentageColor(entry.getPercent()), true);
 					linenum++;
                 }
 			} else {
@@ -71,7 +70,7 @@ public class FoxedoutClient implements ClientModInitializer {
 		// Tick functions
 		ClientTickEvents.END_CLIENT_TICK.register((client)->{
 			BossBarExtractor.tick();
-			setTexts(SkillTracker.getText());
+//			setTexts(SkillTracker.getText());
 			ChatSender.tick();
 		});
 
@@ -86,9 +85,7 @@ public class FoxedoutClient implements ClientModInitializer {
 		ClientSendMessageEvents.ALLOW_CHAT.register(CustomCommands::parseMessage);
 	}
 
-	private int getPercentageColor(String s){
-		int percent = Integer.parseInt(s);
-
+	private int getPercentageColor(int percent){
 		if(percent<10){
 			return 0x880000;
 		}

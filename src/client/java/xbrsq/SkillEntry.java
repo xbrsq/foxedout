@@ -18,4 +18,8 @@ public class SkillEntry {
     public SkillEntry(String name, int[] data){
         this(name, data[0], data[1], data[2]);
     }
+
+    public int getPercent(){
+        return this.xp*100 / this.maxxp;
+    }
 }

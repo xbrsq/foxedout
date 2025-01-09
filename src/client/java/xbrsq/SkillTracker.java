@@ -3,13 +3,14 @@ package xbrsq;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 import java.util.regex.Pattern;
 import java.util.regex.Matcher;
 
 public class SkillTracker {
     private static Map<String, SkillEntry> skills = new HashMap<String, SkillEntry>();
 
-    public static ChatContext mode = ChatContext.NORMAL;
+    public static ChatContext chatMode = ChatContext.NORMAL;
 
 
 
@@ -18,7 +19,16 @@ public class SkillTracker {
     }
 
     public static void updateSkill(String skill, int level, int xp, int xpMax){
-        SkillEntry temp = new SkillEntry("skill", new int[]{level, xp, xpMax});
+        for (Map.Entry<String, SkillEntry> entry : skills.entrySet()) {
+            SkillEntry se = entry.getValue();
+            if(Objects.equals(se.name, skill)){
+                se.level = level;
+                se.xp = xp;
+                se.maxxp = xpMax;
+                return;
+            }
+        }
+        SkillEntry temp = new SkillEntry(skill, new int[]{level, xp, xpMax});
         skills.put(skill, temp);
     }
 
@@ -28,7 +38,7 @@ public class SkillTracker {
         // in practice, I'm lazy. Percent is out of 100 now.
         // also, I'm lazy, so it will wipe the highlight.
 
-        SkillEntry temp = new SkillEntry("skill", new int[]{level, (int) (percent * 100), 100, 0});
+        SkillEntry temp = new SkillEntry(skill, new int[]{level, (int) (percent * 100), 100, 0});
         skills.put(skill, temp);
     }
 
@@ -50,7 +60,7 @@ public class SkillTracker {
         Pattern pattern = Pattern.compile(enterIgnoreModeRegex);
         Matcher matcher = pattern.matcher(text);
         if(matcher.find()){
-            mode = ChatContext.SKILL_DETAILS;
+            chatMode = ChatContext.SKILL_DETAILS;
             return false;
         }
 
@@ -58,7 +68,7 @@ public class SkillTracker {
         matcher = pattern.matcher(text);
 
         if(matcher.find()){
-            mode = ChatContext.NORMAL;
+            chatMode = ChatContext.NORMAL;
             return false;
         }
 
@@ -75,7 +85,7 @@ public class SkillTracker {
 
         }
 
-        if(mode == ChatContext.SKILL_DETAILS) return false;
+        if(chatMode == ChatContext.SKILL_DETAILS) return false;
         pattern = Pattern.compile(statsRegex);
         matcher = pattern.matcher(text);
         if (matcher.find()) {
@@ -122,7 +132,7 @@ public class SkillTracker {
 //        System.out.println("No Match: ["+name+"]");
     }
 
-    public static ArrayList<SkillEntry> getText(){
+    public static ArrayList<SkillEntry> getSkills(){
         ArrayList<SkillEntry> rtrn = new ArrayList<>();
 //        rtrn.add(new String[]{"Skills:", "Level:", "XP:"});
         for (Map.Entry<String, SkillEntry> entry : skills.entrySet()) {
