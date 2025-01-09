@@ -13,23 +13,25 @@ public class CustomCommands {
 
     public static String[][] helpMessages = {
         {
-            "","","",
-            "FoxedOut v1.0.0 mod commands:",
-            "prefix for all commands: "+prefix,
+            "prefix for all commands: \"" + prefix + "\"",
             "",
-            prefix+"help: shows this page",
-            prefix+"movex: move skills display horizontal position",
-            prefix+"movey: move skills display vertical position",
-            prefix+"render: toggle skills display rendering",
-            prefix+"intercept: toggle whether commands are sent to other players",
-            prefix+"skillmessages: toggle whether skill messages are shown",
+            prefix + "help: shows this page",
+            prefix + "movex: move skills display horizontal position",
+            prefix + "movey: move skills display vertical position",
+            prefix + "render: toggle skills display rendering",
+            prefix + "intercept: toggle whether commands are sent to other players",
+                prefix+"skillmessages: toggle whether skill messages are shown",
+        },
+        {
             prefix+"clearcache: clears the skill cache.",
             prefix+"focus <skill|'clear'>: only shows selected skill.",
             prefix+"highlight <skill|'clear'>: highlights skill.",
-            prefix+"sort <field|'asc'|'desc'>: sorts based on field, ascending or descending."},
-        {
+            prefix+"sort <field|'asc'|'desc'>: sorts based on field, or sets",
+                "sorting direction.",
             prefix + "owo: what's this?",
             prefix + "crash: crashes the game. For debug purposes only.",
+        },
+        {
         }
     };
 
@@ -57,8 +59,9 @@ public class CustomCommands {
                     message("Invalid page number: "+page);
                     return disableIntercept;
                 }
-                messages(helpMessages[page-1]); // 1-indexing to 0-indexing
-                message("Page: "+(page)+"/"+helpMessages.length);
+                message("§l§n§6FoxedOut "+FoxedoutClient.version);
+                messages(helpMessages[page-1]); // 1-indexing to 0-indexing conversion
+                message("§o§6Page: "+(page)+"/"+helpMessages.length);
                 return disableIntercept;
             }
             case "movex": {
