@@ -47,7 +47,7 @@ public class FoxedoutClient implements ClientModInitializer {
 				int linenum = 1;
                 for (SkillEntry entry : SkillTracker.getSkills()) {
 					int entryColor = entry.highlighted?0xFFFFFF:0xDDDDDD;
-					context.drawText(textRenderer, entry.name, X+000, Y + (lineSize*linenum), entryColor, true);
+					context.drawText(textRenderer, entry.name, X, Y + (lineSize*linenum), entryColor, true);
 					context.drawText(textRenderer, String.valueOf(entry.level), X+65, Y + (lineSize*linenum), entryColor, true);
 					context.drawText(textRenderer, entry.getPercent() + "%", X + 100, Y + (lineSize * linenum), getPercentageColor(entry.getPercent()), true);
 					linenum++;
