@@ -11,7 +11,9 @@ public class CustomCommands {
 
     public static String prefix = ".";
 
-    public static String[] helpMessages = {
+    public static String[][] helpMessages = {
+        {
+            "","","",
             "FoxedOut v1.0.0 mod commands:",
             "prefix for all commands: "+prefix,
             "",
@@ -24,10 +26,11 @@ public class CustomCommands {
             prefix+"clearcache: clears the skill cache.",
             prefix+"focus <skill|'clear'>: only shows selected skill.",
             prefix+"highlight <skill|'clear'>: highlights skill.",
-            prefix+"sort <field|'asc'|'desc'>: sorts based on field, ascending or descending.",
-
-            prefix+"owo: what's this?",
-            prefix+"crash: crashes the game. For debug purposes only.",
+            prefix+"sort <field|'asc'|'desc'>: sorts based on field, ascending or descending."},
+        {
+            prefix + "owo: what's this?",
+            prefix + "crash: crashes the game. For debug purposes only.",
+        }
     };
 
 
@@ -46,7 +49,16 @@ public class CustomCommands {
         switch(parsedMessage[0].toLowerCase()){
             // main commands
             case "help": {
-                messages(helpMessages);
+                int page = 1;
+                if (assertIntegerArgument(parsedMessage, 0, false)) {
+                    page = Integer.parseInt(parsedMessage[1]);
+                }
+                if(page<=0 || page>helpMessages.length){
+                    message("Invalid page number: "+page);
+                    return disableIntercept;
+                }
+                messages(helpMessages[page-1]); // 1-indexing to 0-indexing
+                message("Page: "+(page)+"/"+helpMessages.length);
                 return disableIntercept;
             }
             case "movex": {
