@@ -3,7 +3,6 @@ package xbrsq;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Objects;
 import java.util.regex.Pattern;
 import java.util.regex.Matcher;
 
@@ -12,6 +11,8 @@ public class SkillTracker {
 
     public static ChatContext chatMode = ChatContext.NORMAL;
 
+    public static String focus = "";
+
 
 
     public static void updateSkill(String skill, Integer level){
@@ -19,14 +20,12 @@ public class SkillTracker {
     }
 
     public static void updateSkill(String skill, int level, int xp, int xpMax){
-        for (Map.Entry<String, SkillEntry> entry : skills.entrySet()) {
-            SkillEntry se = entry.getValue();
-            if(Objects.equals(se.name, skill)){
-                se.level = level;
-                se.xp = xp;
-                se.maxxp = xpMax;
-                return;
-            }
+        SkillEntry se = getByName(skill);
+        if(se != null){
+            se.level = level;
+            se.xp = xp;
+            se.maxxp = xpMax;
+            return;
         }
         SkillEntry temp = new SkillEntry(skill, new int[]{level, xp, xpMax});
         skills.put(skill, temp);
@@ -132,20 +131,30 @@ public class SkillTracker {
 //        System.out.println("No Match: ["+name+"]");
     }
 
-    public static ArrayList<SkillEntry> getSkills(){
+    public static ArrayList<SkillEntry> getSkills(boolean forceAll){
         ArrayList<SkillEntry> rtrn = new ArrayList<>();
-//        rtrn.add(new String[]{"Skills:", "Level:", "XP:"});
+        // if focused, only return focus
+        if(!forceAll && getByName(focus)!=null){
+            rtrn.add(getByName(focus));
+            return rtrn;
+        }
+
+        // otherwise, return all.
         for (Map.Entry<String, SkillEntry> entry : skills.entrySet()) {
             rtrn.add(entry.getValue());
-//            rtrn.add(assembleLine(entry.getKey(), entry.getValue()));
         }
         return rtrn;
     }
-
-    private static String[] assembleLine(String key, int[] value){
-        return new String[]{key, ""+value[0], ""+value[1]*100/value[2]};
+    public static ArrayList<SkillEntry> getSkills() {
+        return getSkills(false);
     }
-    private static String charRepeat(String c, int num){
-        return new String(new char[num]).replace("\0", c);
+
+    public static SkillEntry getByName(String name){
+        for (Map.Entry<String, SkillEntry> entry : skills.entrySet()) {
+            SkillEntry se = entry.getValue();
+            if(se.name.equalsIgnoreCase(name)){
+                return se;
+            }
+        }return null;
     }
 }

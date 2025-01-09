@@ -4,23 +4,21 @@ import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.hud.ChatHud;
 import net.minecraft.text.Text;
 import java.util.ArrayList;
-import java.util.Collections;
 
 public class ChatSender {
     private static ChatHud chatHud;
     private static ArrayList<String> messageBuffer = new ArrayList<String>();
 
-    public static boolean fakeRecieve(String message){
+    public static void fakeRecieve(String message){
         if(chatHud == null){
             System.out.println("Resetting client...");
             chatHud = MinecraftClient.getInstance().inGameHud.getChatHud();
             if(chatHud==null){
                 System.out.println("Reset failed!");
-                return false;
+                return;
             }
         }
         chatHud.addMessage(Text.of(message));
-        return true;
     }
 
     public static void bufferMessage(String message){

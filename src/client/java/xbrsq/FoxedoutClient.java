@@ -47,21 +47,22 @@ public class FoxedoutClient implements ClientModInitializer {
 		HudRenderCallback.EVENT.register((DrawContext context, RenderTickCounter tickDelta) -> {
 			if(!doRender) return;
 			if (textRenderer != null) {
-				// Safe to call methods on textRenderer
-				context.drawText(textRenderer, "Skills:",	X+00, Y,		0xFFFFFFFF,	true);
-				context.drawText(textRenderer, "Level:",	X+60, Y,		0xFFFFFFFF,	true);
-				context.drawText(textRenderer, "XP:",		X+100, Y,	0xFFFFFFFF,	true);
+				// textRenderer exists, so you can use it
+				context.drawText(textRenderer, "Skills:",	X+00, Y,		0xDDDDDD,	true);
+				context.drawText(textRenderer, "Level:",	X+60, Y,		0xDDDDDD,	true);
+				context.drawText(textRenderer, "XP:",		X+100, Y,	0xDDDDDD,	true);
 
 				int linenum = 1;
                 for (SkillEntry entry : SkillTracker.getSkills()) {
-					context.drawText(textRenderer, entry.name, X+000, Y + (lineSize*linenum), 0xFFFFFFFF, true);
-					context.drawText(textRenderer, String.valueOf(entry.level), X+65, Y + (lineSize*linenum), 0xFFFFFFFF, true);
-					context.drawText(textRenderer, String.valueOf(entry.getPercent()) + "%", X + 100, Y + (lineSize * linenum), getPercentageColor(entry.getPercent()), true);
+					int entryColor = entry.highlighted?0xFFFFFF:0xDDDDDD;
+					context.drawText(textRenderer, entry.name, X+000, Y + (lineSize*linenum), entryColor, true);
+					context.drawText(textRenderer, String.valueOf(entry.level), X+65, Y + (lineSize*linenum), entryColor, true);
+					context.drawText(textRenderer, entry.getPercent() + "%", X + 100, Y + (lineSize * linenum), getPercentageColor(entry.getPercent()), true);
 					linenum++;
                 }
 			} else {
 				// create textRenderer
-				System.err.println("TextRenderer is null!");
+				System.err.println("TextRenderer is null! Attempting to set it.");
 
 				textRenderer = client.textRenderer;
 			}
@@ -70,14 +71,13 @@ public class FoxedoutClient implements ClientModInitializer {
 		// Tick functions
 		ClientTickEvents.END_CLIENT_TICK.register((client)->{
 			BossBarExtractor.tick();
-//			setTexts(SkillTracker.getText());
 			ChatSender.tick();
 		});
 
 		// chat message received
 		ClientReceiveMessageEvents.ALLOW_GAME.register((text, unknownBoolean)->{
 			if(SkillTracker.parseText(text.getString())){
-				return hideSkillMessages; // hide message
+				return !hideSkillMessages; // hide message
 			}
 			return true;
 		});

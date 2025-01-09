@@ -1,5 +1,7 @@
 package xbrsq;
 
+import java.util.ArrayList;
+
 public class CustomCommands {
 
     public static final boolean PASS = true;
@@ -18,6 +20,8 @@ public class CustomCommands {
             prefix+"intercept: toggle whether commands are sent to other players",
             prefix+"skillmessages: toggle whether skill messages are shown",
             prefix+"clearcache: clears the skill cache.",
+            prefix+"focus <skill|'clear'>: only shows selected skill.",
+            prefix+"highlight <skill|'clear'>: highlights skill.",
 
             prefix+"owo: what's this?",
             prefix+"crash: crashes the game. For debug purposes only.",
@@ -84,6 +88,45 @@ public class CustomCommands {
                 message("Clearing skill cache...");
                 return disableIntercept;
             }
+            case "focus": {
+                if (!assertArgNumber(parsedMessage, 1, true)) {
+                    return disableIntercept;
+                }
+                if(parsedMessage[1].equalsIgnoreCase("clear")){
+                    SkillTracker.focus = "";
+                    message("Cleared focus");
+                    return disableIntercept;
+                }
+                SkillEntry se = SkillTracker.getByName(parsedMessage[1]);
+                if(se==null){
+                    message("Skill not loaded");
+                    return disableIntercept;
+                }
+                SkillTracker.focus = se.name;
+                message("Focusing: "+SkillTracker.focus);
+                return disableIntercept;
+            }
+            case "highlight": {
+                if (!assertArgNumber(parsedMessage, 1, true)) {
+                    return disableIntercept;
+                }
+                if (parsedMessage[1].equalsIgnoreCase("clear")) {
+                    ArrayList<SkillEntry> skills = SkillTracker.getSkills(true);
+                    for (SkillEntry se : skills) {
+                        se.highlighted = false;
+                    }
+                    message("Cleared highlights");
+                    return disableIntercept;
+                }
+                SkillEntry se = SkillTracker.getByName(parsedMessage[1]);
+                if (se == null) {
+                    message("Skill not loaded");
+                    return disableIntercept;
+                }
+                se.highlighted = !se.highlighted;
+                message(se.name + " is now " + (se.highlighted ? "" : "not ") + "highlighted");
+                return disableIntercept;
+            }
 
             // utility
             case "crash": {
@@ -104,7 +147,7 @@ public class CustomCommands {
             }
             default: {
                 message("Unknown command.");
-                return STOP;
+                return disableIntercept;
             }
 
         }
