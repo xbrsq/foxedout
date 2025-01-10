@@ -9,6 +9,8 @@ import net.minecraft.client.font.TextRenderer;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.render.RenderTickCounter;
 import net.fabricmc.fabric.api.client.message.v1.ClientReceiveMessageEvents;
+import xbrsq.chat.ChatSender;
+
 import java.util.ArrayList;
 
 public class FoxedoutClient implements ClientModInitializer {

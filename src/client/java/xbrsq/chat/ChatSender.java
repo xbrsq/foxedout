@@ -1,26 +1,23 @@
-package xbrsq;
+package xbrsq.chat;
 
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.hud.ChatHud;
 import net.minecraft.text.Text;
+
 import java.util.ArrayList;
-import java.util.Arrays;
 
 public class ChatSender {
     private static ChatHud chatHud;
-    private static final ArrayList<String> messageBuffer = new ArrayList<>();
-    private static final ArrayList<String> sendBuffer = new ArrayList<>();
+    private static final ArrayList<Message> messageBuffer = new ArrayList<>();
+    private static final ArrayList<Message> sendBuffer = new ArrayList<>();
 
-    public static void fakeRecieve(String message){
-        if(chatHud == null){
-            System.out.println("Resetting client...");
-            chatHud = MinecraftClient.getInstance().inGameHud.getChatHud();
-            if(chatHud==null){
-                System.out.println("Reset failed!");
-                return;
-            }
-        }
-        chatHud.addMessage(Text.of(message));
+    public static void fakeReceive(String message){
+        fakeReceive(message, MessageType.NORMAL);
+    }
+    public static void fakeReceive(String message, MessageType type){
+        if(!isOnline())
+            return;
+        chatHud.addMessage(Text.of(new Message(message, type).toString()));
     }
 
     public static void broadcastCommand(String command){
@@ -39,10 +36,20 @@ public class ChatSender {
     }
 
     public static void bufferMessage(String message){
-        messageBuffer.add(message);
+        bufferMessage(message, MessageType.NORMAL);
+    }
+    public static void bufferMessage(String message, MessageType type){
+        messageBuffer.add(new Message(message, type));
     }
     public static void bufferMessages(String[] messages){
-        messageBuffer.addAll(Arrays.asList(messages));
+        for(String str: messages){
+            messageBuffer.add(new Message(str));
+        }
+    }
+    public static void bufferMessages(String[] messages, MessageType type){
+        for(String str: messages){
+            messageBuffer.add(new Message(str, type));
+        }
     }
 
     public static boolean isOnline(){
@@ -63,7 +70,7 @@ public class ChatSender {
         }
         while(!messageBuffer.isEmpty()){
             System.out.println("> "+messageBuffer.getFirst());
-            fakeRecieve(messageBuffer.removeFirst());
+            fakeReceive(messageBuffer.removeFirst().toString());
         }
     }
 }

@@ -1,6 +1,8 @@
 package xbrsq;
 
 import org.jetbrains.annotations.NotNull;
+import xbrsq.chat.ChatSender;
+import xbrsq.chat.MessageType;
 
 import java.util.ArrayList;
 
@@ -64,7 +66,7 @@ public class CustomCommands {
                     page = Integer.parseInt(parsedMessage[1]);
                 }
                 if(page<=0 || page>helpMessages.length){
-                    message("Invalid page number: "+page);
+                    message("Invalid page number: "+page, MessageType.ERROR);
                     return disableIntercept;
                 }
                 message("§l§n§6FoxedOut "+FoxedoutClient.version);
@@ -125,7 +127,7 @@ public class CustomCommands {
                 }
                 SkillEntry se = SkillTracker.getByName(parsedMessage[1]);
                 if(se==null){
-                    message("Skill not loaded");
+                    message("Skill not loaded", MessageType.ERROR);
                     return disableIntercept;
                 }
                 SkillTracker.focus = se.name;
@@ -146,7 +148,7 @@ public class CustomCommands {
                 }
                 SkillEntry se = SkillTracker.getByName(parsedMessage[1]);
                 if (se == null) {
-                    message("Skill not loaded");
+                    message("Skill not loaded", MessageType.ERROR);
                     return disableIntercept;
                 }
                 se.highlighted = !se.highlighted;
@@ -193,13 +195,13 @@ public class CustomCommands {
                         }
                         break;
                     default:
-                        message("Unknown sorting: "+parsedMessage[1]);
+                        message("Unknown sorting: "+parsedMessage[1], MessageType.ERROR);
                         return disableIntercept;
                 }
 
                 // war crime equality checking:
                 if(s==0 || (((FoxedoutClient.sorting>=0)?(FoxedoutClient.sorting):(-FoxedoutClient.sorting))==s)){
-                    message("Already sorting this way");
+                    message("Already sorting this way", MessageType.WARN);
                     return disableIntercept;
                 }
                 else if(s<0){
@@ -239,7 +241,7 @@ public class CustomCommands {
                 }
                 SkillEntry se = SkillTracker.getByName(parsedMessage[1]);
                 if (se == null) {
-                    message("Skill not loaded");
+                    message("Skill not loaded", MessageType.ERROR);
                     return disableIntercept;
                 }
                 se.pinned = !se.pinned;
@@ -255,7 +257,7 @@ public class CustomCommands {
                     return STOP;
                 }
                 if(Integer.parseInt(parsedMessage[1])<0){
-                    message("Limit can not be less than 0");
+                    message("Limit can not be less than 0", MessageType.ERROR);
                     return STOP;
                 }
                 FoxedoutClient.limit = Integer.parseInt(parsedMessage[1]);
@@ -268,13 +270,13 @@ public class CustomCommands {
             // for dev only, because I keep forgetting to break after the last main command
             // if you see this, something went quite wrong
             case " oops, forgot the return": {
-                message("YOU FORGOT TO BREAK OUT OF THE RETURN, MADAM DUMBASS");
+                message("YOU FORGOT TO BREAK OUT OF THE RETURN, MADAM DUMBASS", MessageType.SUPERERROR);
                 break;
                 }
 
             // utility
             case "crash": {
-                immediateMessage("Attempting to crash...");
+                immediateMessage("Attempting to crash...", MessageType.WARN);
                 // to force crash;
                 int x = 0/0;
                 return STOP;
@@ -290,22 +292,29 @@ public class CustomCommands {
                 break;
             }
             default: {
-                message("Unknown command.");
+                message("Unknown command: "+parsedMessage[0], MessageType.ERROR);
                 return disableIntercept;
             }
 
         }
 
-        ChatSender.fakeRecieve("somehow, you got here. You shouldn't have been able to.");
+        ChatSender.fakeReceive("somehow, you got here. You shouldn't have been able to.");
         return STOP;
 
     }
 
     private static void immediateMessage(String s) {
-        ChatSender.fakeRecieve(s);
+        ChatSender.fakeReceive(s);
+    }
+    private static void immediateMessage(String s, MessageType type) {
+        ChatSender.fakeReceive(s, type);
     }
     private static void message(String s) {
-        ChatSender.bufferMessage(s);
+        message(s, MessageType.NORMAL);
+    }
+
+    private static void message(String s, MessageType type) {
+        ChatSender.bufferMessage(s, type);
     }
     private static void messages(String[] s) {
         ChatSender.bufferMessages(s);
@@ -313,11 +322,11 @@ public class CustomCommands {
 
     private static boolean assertArgNumber(String[] parsedMessage, int numArgs, boolean useFailMessage){
         if(parsedMessage==null){
-            if(useFailMessage) message("parsedMessage is null! AAAAAAAAAHHHHHHH!");
+            if(useFailMessage) message("parsedMessage is null! AAAAAAAAAHHHHHHH!", MessageType.ERROR);
             return false;
         }
         if(parsedMessage.length <= numArgs){ // <= because of off-by-one from root command
-            if(useFailMessage) message("Too little arguments: "+numArgs+" required.");
+            if(useFailMessage) message("Too little arguments: "+numArgs+" required.", MessageType.ERROR);
             return false;
         }
         return true;
@@ -333,7 +342,7 @@ public class CustomCommands {
             return true;
         } catch(Exception E){
             if(useFailMessage)
-                message("Argument "+argNum+" is not an integer");
+                message("Argument "+argNum+" is not an integer", MessageType.ERROR);
             return false;
         }
     }
