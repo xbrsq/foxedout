@@ -11,7 +11,8 @@ public class CustomCommands {
 
     public static String prefix = ".";
 
-    public static String[][] helpMessages = {
+    public static String[][] helpMessages =
+            {
         {
             "prefix for all commands: \"" + prefix + "\"",
             "",
@@ -23,11 +24,16 @@ public class CustomCommands {
             prefix+"skillmessages: toggle whether skill messages are shown",
         },
         {
-            prefix+"clearcache: clears the skill cache.",
-            prefix+"focus <skill | 'clear'>: only shows selected skill.",
-            prefix+"highlight <skill | 'clear'>: highlights skill.",
-            prefix+"sort <field | 'asc' | 'desc'>: sorts based on field, or sets",
-                "sorting direction.",
+            prefix + "clearcache: clears the skill cache.",
+            prefix + "focus <skill | 'clear'>: only shows selected skill.",
+            prefix + "highlight <skill | 'clear'>: highlights skill.",
+            prefix + "sort <field | 'asc' | 'desc'>: sorts based on field, or sets",
+            "sorting direction.",
+            prefix + "refresh, " + prefix + "stats: refresh skill data",
+            prefix+"inspect <name>, "+prefix+"lookup <name>: get player data",
+            prefix+"pin <skill | 'clear'>: pin a skill to the top or clear pins.",
+        }, {
+            prefix+"limit [number]: gets or sets limit",
             prefix + "owo: what's this?",
             prefix + "crash: crashes the game. For debug purposes only.",
         },
