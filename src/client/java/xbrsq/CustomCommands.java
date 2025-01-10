@@ -170,6 +170,10 @@ public class CustomCommands {
                     case "time":
                         s = SkillSorter.S_TIME;
                         break;
+                    case "pinned":
+                    case "pin":
+                        s = SkillSorter.S_PIN;
+                        break;
                     case "asc":
                         parsedMessage[1] = "ascending";
                         if(FoxedoutClient.sorting<0){
@@ -211,9 +215,32 @@ public class CustomCommands {
                 return disableIntercept;
             }
             case "inspect":
-            case "lookup":
-                ChatSender.broadcastCommand("mcinspect "+parsedMessage[1]);
+            case "lookup": {
+                ChatSender.broadcastCommand("mcinspect " + parsedMessage[1]);
                 return disableIntercept;
+            }
+            case "pin": {
+                if (!assertArgNumber(parsedMessage, 1, true)) {
+                    return disableIntercept;
+                }
+                if (parsedMessage[1].equalsIgnoreCase("clear")) {
+                    ArrayList<SkillEntry> skills = SkillTracker.getSkills(true);
+                    for (SkillEntry se : skills) {
+                        se.pinned = false;
+                    }
+                    message("Cleared pins");
+                    return disableIntercept;
+                }
+                SkillEntry se = SkillTracker.getByName(parsedMessage[1]);
+                if (se == null) {
+                    message("Skill not loaded");
+                    return disableIntercept;
+                }
+                se.pinned = !se.pinned;
+                message(se.name + " is now " + (se.pinned ? "" : "not ") + "pinned");
+                return disableIntercept;
+            }
+
 
 
             // for dev only, because I keep forgetting to break after the last main command

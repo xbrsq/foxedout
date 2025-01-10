@@ -7,6 +7,7 @@ public class SkillEntry {
     public int maxxp;
     public long time;
     public boolean highlighted;
+    public boolean pinned;
 
     public SkillEntry(String name, int level, int xp, int maxxp){
         this.name = name;
@@ -14,6 +15,7 @@ public class SkillEntry {
         this.xp = xp;
         this.maxxp = maxxp;
         this.highlighted = false;
+        this.pinned = false;
     }
 
     public SkillEntry(String name, int[] data){

@@ -47,7 +47,7 @@ public class FoxedoutClient implements ClientModInitializer {
 				context.drawText(textRenderer, "XP:",		X+100,	Y,	0xDDDDDD,	true);
 
 				int linenum = 1;
-				ArrayList<SkillEntry> skills = SkillSorter.sort(SkillTracker.getSkills(), sorting);
+				ArrayList<SkillEntry> skills = SkillSorter.sort(SkillTracker.getSkills(), new int[]{SkillSorter.S_PIN*SkillSorter.M_DESC, sorting});
 				for (SkillEntry entry : skills) {
 					int entryColor = entry.highlighted?0xFFFFFF:0xDDDDDD;
 					context.drawText(textRenderer, entry.name, X, Y + (lineSize*linenum), entryColor, true);

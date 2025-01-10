@@ -8,6 +8,7 @@ public class SkillSorter {
     public static final int S_PERCENT = 3;
     public static final int S_TIME = 4;
     public static final int S_NONE = 5;
+    public static final int S_PIN = 6;
 
     public static final int M_ASC = 1;
     public static final int M_DESC = -1;
@@ -56,6 +57,16 @@ public class SkillSorter {
         return rtrn;
     }
 
+    public static ArrayList<SkillEntry> sort(ArrayList<SkillEntry> skills, int[] sortBys){
+        ArrayList<SkillEntry> temp = skills;
+
+        for(int i=0;i<sortBys.length;i++){
+            temp = sort(temp, sortBys[sortBys.length-1-i]); // sort in reverse order, so earlier ones are higher priority.
+        }
+
+        return temp;
+    }
+
     private static int compare(SkillEntry a, SkillEntry b, int sortBy){
         // returns <0 when a is less, and >0 when a is greater, and 0 for equal
         return switch (sortBy*sortBy) {
@@ -63,6 +74,7 @@ public class SkillSorter {
             case S_LEVEL*S_LEVEL -> Integer.compare(a.level, b.level);
             case S_PERCENT*S_PERCENT -> Integer.compare(a.getPercent(), b.getPercent());
             case S_TIME*S_TIME -> Long.compare(a.time, b.time);
+            case S_PIN*S_PIN -> Boolean.compare(a.pinned, b.pinned);
             default -> 0;
         };
     }
