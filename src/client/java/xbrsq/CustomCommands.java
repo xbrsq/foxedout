@@ -248,6 +248,10 @@ public class CustomCommands {
                 if (!assertIntegerArgument(parsedMessage, 0, true)) {
                     return STOP;
                 }
+                if(Integer.parseInt(parsedMessage[1])<0){
+                    message("Limit can not be less than 0");
+                    return STOP;
+                }
                 FoxedoutClient.limit = Integer.parseInt(parsedMessage[1]);
                 message("Setting limit to " + FoxedoutClient.limit);
                 return disableIntercept;
