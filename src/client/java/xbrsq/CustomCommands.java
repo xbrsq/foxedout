@@ -240,6 +240,18 @@ public class CustomCommands {
                 message(se.name + " is now " + (se.pinned ? "" : "not ") + "pinned");
                 return disableIntercept;
             }
+            case "limit": {
+                if (!assertArgNumber(parsedMessage, 1, false)) {
+                    message("Current limit is: "+FoxedoutClient.limit);
+                    return disableIntercept;
+                }
+                if (!assertIntegerArgument(parsedMessage, 0, true)) {
+                    return STOP;
+                }
+                FoxedoutClient.limit = Integer.parseInt(parsedMessage[1]);
+                message("Setting limit to " + FoxedoutClient.limit);
+                return disableIntercept;
+            }
 
 
 

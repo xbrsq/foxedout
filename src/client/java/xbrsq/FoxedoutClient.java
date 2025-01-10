@@ -21,6 +21,7 @@ public class FoxedoutClient implements ClientModInitializer {
 	public static boolean hideSkillMessages = false;
 
 	public static int sorting = SkillSorter.S_NONE*SkillSorter.M_ASC;
+	public static int limit = 1024;
 
 	public static boolean doRender = true;
 
@@ -48,6 +49,9 @@ public class FoxedoutClient implements ClientModInitializer {
 
 				int linenum = 1;
 				ArrayList<SkillEntry> skills = SkillSorter.sort(SkillTracker.getSkills(), new int[]{SkillSorter.S_PIN*SkillSorter.M_DESC, sorting});
+				if(skills.size()>limit){
+					skills = new ArrayList<>(skills.subList(0, limit));;
+				}
 				for (SkillEntry entry : skills) {
 					int entryColor = entry.highlighted?0xFFFFFF:0xDDDDDD;
 					context.drawText(textRenderer, entry.name, X, Y + (lineSize*linenum), entryColor, true);
