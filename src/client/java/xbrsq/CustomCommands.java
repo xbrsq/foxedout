@@ -257,9 +257,10 @@ public class CustomCommands {
 
             // for dev only, because I keep forgetting to break after the last main command
             // if you see this, something went quite wrong
-            case " oops, forgot the return":
+            case " oops, forgot the return": {
                 message("YOU FORGOT TO BREAK OUT OF THE RETURN, MADAM DUMBASS");
                 break;
+                }
 
             // utility
             case "crash": {
