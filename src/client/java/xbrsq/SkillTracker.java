@@ -53,7 +53,7 @@ public class SkillTracker {
     public static boolean parseText(String text){
 
         String enterIgnoreModeRegex = "\\[]=====\\[].*";
-        String exitIgnoreModeRegex = "\\[]=====\\[].*";
+        String exitIgnoreModeRegex = "\\[| .*";
 
         String increaseRegex = "§l(\\w+) increased to §r§a§l(\\w+)§r§f";
         String statsRegex = "(\\w+): (\\w+) XP\\(([0-9,]+)/([0-9,]+)\\).*";
