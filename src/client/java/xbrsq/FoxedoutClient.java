@@ -27,7 +27,7 @@ public class FoxedoutClient implements ClientModInitializer {
 
 	public static boolean doRender = true;
 
-	public static final String version = "0.3.0";
+	public static final String version = "0.3.1";
 
 	public static void setPos(int x, int y){
 		X = x;
