@@ -10,7 +10,9 @@ import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.render.RenderTickCounter;
 import net.fabricmc.fabric.api.client.message.v1.ClientReceiveMessageEvents;
 import xbrsq.chat.ChatSender;
-import xbrsq.commands.Commands;
+import xbrsq.commands.CommandController;
+import xbrsq.commands.RootCommands;
+import xbrsq.commands.SkillCommands;
 import xbrsq.scheduler.Scheduler;
 import xbrsq.skills.BossBarExtractor;
 import xbrsq.skills.SkillEntry;
@@ -39,6 +41,8 @@ public class FoxedoutClient implements ClientModInitializer {
 	public static Scheduler syncScheduler;
 	public static Scheduler asyncScheduler;
 
+	public static CommandController commandController;
+
 	public static void setPos(int x, int y){
 		X = x;
 		Y = y;
@@ -52,6 +56,7 @@ public class FoxedoutClient implements ClientModInitializer {
 		// init: -------------------------------------------
 		syncScheduler = new Scheduler();
 		asyncScheduler = new Scheduler();
+		commandController = new CommandController();
 
 
 		// setup event handlers: ---------------------------
@@ -106,7 +111,10 @@ public class FoxedoutClient implements ClientModInitializer {
 			return true;
 		});
 
-		ClientSendMessageEvents.ALLOW_CHAT.register(Commands::parseMessage);
+		ClientSendMessageEvents.ALLOW_CHAT.register(commandController::parseMessage);
+
+		// add commands to the controller
+		addCommandModules();
 	}
 
 	private int getPercentageColor(int percent){
@@ -129,5 +137,8 @@ public class FoxedoutClient implements ClientModInitializer {
 		return 0x4444FF;
 	}
 
-
+	void addCommandModules(){
+		commandController.modules.add(new SkillCommands());
+		commandController.modules.add(new RootCommands());
+	}
 }

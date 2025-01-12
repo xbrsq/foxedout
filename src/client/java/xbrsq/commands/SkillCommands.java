@@ -1,7 +1,6 @@
 
 package xbrsq.commands;
 
-import org.jetbrains.annotations.NotNull;
 import xbrsq.FoxedoutClient;
 import xbrsq.chat.ChatSender;
 import xbrsq.chat.MessageType;
@@ -11,81 +10,56 @@ import xbrsq.skills.SkillTracker;
 
 import java.util.ArrayList;
 
-import static xbrsq.commands.Commands.*;
+import static xbrsq.commands.CommandController.*;
 
-public class SkillCommands {
+public class SkillCommands extends CommandModule{
 
-    public static String module = "skills";
+//    public boolean enabled = true;
+//    String[] moduleNames = {"skills", "skill", "s"};
+    public SkillCommands(){
+        this.name = "SkillCommands";
+        this.enabled = true;
+        this.moduleNames = new String[]{"skills", "skill", "s"};
 
-    public static String[][] helpMessages =
-            {
-                    {
-                        "Help not created yet. Check back later.",
+        this.commands = new Command[]{
+                new Command("movex", (parsedMessage) -> {
+                    if (!assertArgNumber(parsedMessage, 1, true)) {
+                        return STOP;
                     }
-            };
-
-
-    // disable to force all chat messages to be allowed through
-    public static boolean disableIntercept = STOP;
-
-    public static boolean parseMessage(String[] parsedMessage) {
-        // returns whether to allow message
-
-        switch (parsedMessage[0].toLowerCase()) {
-            // main commands
-            case "?":
-            case "help": {
-                int page = 1;
-                if (assertIntegerArgument(parsedMessage, 0, false)) {
-                    page = Integer.parseInt(parsedMessage[1]);
-                }
-                if (page <= 0 || page > helpMessages.length) {
-                    message("Invalid page number: " + page, MessageType.ERROR);
+                    if (!assertIntegerArgument(parsedMessage, 0, true)) {
+                        return STOP;
+                    }
+                    FoxedoutClient.X = Integer.parseInt(parsedMessage[1]);
+                    message("Moving x=" + FoxedoutClient.X);
                     return disableIntercept;
-                }
-                message("§l§n§6FoxedOut " + FoxedoutClient.version);
-                messages(helpMessages[page - 1]); // 1-indexing to 0-indexing conversion
-                message("§o§6Page: " + (page) + "/" + helpMessages.length);
-                return disableIntercept;
-            }
-            case "movex": {
-                if (!assertArgNumber(parsedMessage, 1, true)) {
-                    return STOP;
-                }
-                if (!assertIntegerArgument(parsedMessage, 0, true)) {
-                    return STOP;
-                }
-                FoxedoutClient.X = Integer.parseInt(parsedMessage[1]);
-                message("Moving x=" + FoxedoutClient.X);
-                return disableIntercept;
-            }
-            case "movey": {
-                if (!assertArgNumber(parsedMessage, 1, true)) {
-                    return STOP;
-                }
-                if (!assertIntegerArgument(parsedMessage, 0, true)) {
-                    return STOP;
-                }
-                FoxedoutClient.Y = Integer.parseInt(parsedMessage[1]);
-                message("Moving y=" + FoxedoutClient.Y);
-                return disableIntercept;
-            }
-            case "render": {
+                }),
+                new Command("movey", (parsedMessage) -> {
+                    if (!assertArgNumber(parsedMessage, 1, true)) {
+                        return STOP;
+                    }
+                    if (!assertIntegerArgument(parsedMessage, 0, true)) {
+                        return STOP;
+                    }
+                    FoxedoutClient.Y = Integer.parseInt(parsedMessage[1]);
+                    message("Moving y=" + FoxedoutClient.Y);
+                    return disableIntercept;
+                }),
+                new Command("render", (parsedMessage)-> {
                 FoxedoutClient.doRender = !FoxedoutClient.doRender;
                 message("Rendering: " + FoxedoutClient.doRender);
                 return disableIntercept;
-            }
-            case "skillmessages": {
+            }),
+                new Command("skillmessages", (parsedMessage)-> {
                 FoxedoutClient.hideSkillMessages = !FoxedoutClient.hideSkillMessages;
                 message("Skill messages: " + (FoxedoutClient.hideSkillMessages ? "shown" : "hidden"));
                 return disableIntercept;
-            }
-            case "clearcache": {
+            }),
+                new Command("clearcache", (parsedMessage)-> {
                 SkillTracker.clearSkills();
                 message("Clearing skill cache...");
                 return disableIntercept;
-            }
-            case "focus": {
+            }),
+                new Command("focus", (parsedMessage)-> {
                 if (!assertArgNumber(parsedMessage, 1, true)) {
                     return disableIntercept;
                 }
@@ -102,8 +76,8 @@ public class SkillCommands {
                 SkillTracker.focus = se.name;
                 message("Focusing: " + SkillTracker.focus);
                 return disableIntercept;
-            }
-            case "highlight": {
+            }),
+                new Command("highlight", (parsedMessage)-> {
                 if (!assertArgNumber(parsedMessage, 1, true)) {
                     return disableIntercept;
                 }
@@ -123,8 +97,8 @@ public class SkillCommands {
                 se.highlighted = !se.highlighted;
                 message(se.name + " is now " + (se.highlighted ? "" : "not ") + "highlighted");
                 return disableIntercept;
-            }
-            case "sort": {
+            }),
+                new Command("sort", (parsedMessage)-> {
                 if (!assertArgNumber(parsedMessage, 1, true)) {
                     return disableIntercept;
                 }
@@ -183,18 +157,8 @@ public class SkillCommands {
 
                 message("Sorting: " + parsedMessage[1].toLowerCase());
                 return disableIntercept;
-            }
-            case "refresh":
-            case "stats": {
-                ChatSender.broadcastCommand("stats");
-                return disableIntercept;
-            }
-            case "inspect":
-            case "lookup": {
-                ChatSender.broadcastCommand("mcinspect " + parsedMessage[1]);
-                return disableIntercept;
-            }
-            case "pin": {
+            }),
+                new Command("pin", (parsedMessage)-> {
                 if (!assertArgNumber(parsedMessage, 1, true)) {
                     return disableIntercept;
                 }
@@ -214,8 +178,8 @@ public class SkillCommands {
                 se.pinned = !se.pinned;
                 message(se.name + " is now " + (se.pinned ? "" : "not ") + "pinned");
                 return disableIntercept;
-            }
-            case "limit": {
+            }),
+                new Command("limit", (parsedMessage)-> {
                 if (!assertArgNumber(parsedMessage, 1, false)) {
                     message("Current limit is: " + FoxedoutClient.limit);
                     return disableIntercept;
@@ -230,27 +194,16 @@ public class SkillCommands {
                 FoxedoutClient.limit = Integer.parseInt(parsedMessage[1]);
                 message("Setting limit to " + FoxedoutClient.limit);
                 return disableIntercept;
-            }
+            }),
 
-            // for dev only, because I keep forgetting to break after the last main command
-            // if you see this, something went quite wrong
-            case " oops, forgot the return": {
-                message("YOU FORGOT TO BREAK OUT OF THE RETURN, MADAM DUMBASS", MessageType.SUPERERROR);
-                break;
-            }
-            case " to avoid compiler warnings": {
-                // inaccessable, to avoid compiler error of unreachable code after switch.
-                break;
-            }
-            default: {
-                message("Unknown command: " + parsedMessage[0], MessageType.ERROR);
-                return disableIntercept;
-            }
-
-        }
-
-        ChatSender.fakeReceive("somehow, you got here. You shouldn't have been able to.");
-        return STOP;
-
+                new Command(new String[]{"refresh", "skills", "stats"}, (parsedMessage)-> {
+                    ChatSender.broadcastCommand("stats");
+                    return disableIntercept;
+                }),
+                new Command(new String[]{"inspect", "lookup"}, (parsedMessage)-> {
+                    ChatSender.broadcastCommand("mcinspect " + parsedMessage[1]);
+                    return disableIntercept;
+                }),
+        };
     }
 }
