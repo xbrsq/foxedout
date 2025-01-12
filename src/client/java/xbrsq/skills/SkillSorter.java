@@ -1,4 +1,4 @@
-package xbrsq;
+package xbrsq.skills;
 
 import java.util.ArrayList;
 

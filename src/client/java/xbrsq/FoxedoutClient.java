@@ -10,7 +10,12 @@ import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.render.RenderTickCounter;
 import net.fabricmc.fabric.api.client.message.v1.ClientReceiveMessageEvents;
 import xbrsq.chat.ChatSender;
+import xbrsq.commands.Commands;
 import xbrsq.scheduler.Scheduler;
+import xbrsq.skills.BossBarExtractor;
+import xbrsq.skills.SkillEntry;
+import xbrsq.skills.SkillSorter;
+import xbrsq.skills.SkillTracker;
 
 import java.util.ArrayList;
 
@@ -101,7 +106,7 @@ public class FoxedoutClient implements ClientModInitializer {
 			return true;
 		});
 
-		ClientSendMessageEvents.ALLOW_CHAT.register(CustomCommands::parseMessage);
+		ClientSendMessageEvents.ALLOW_CHAT.register(Commands::parseMessage);
 	}
 
 	private int getPercentageColor(int percent){

@@ -1,4 +1,4 @@
-package xbrsq;
+package xbrsq.skills;
 
 
 import net.minecraft.client.MinecraftClient;
@@ -13,7 +13,7 @@ public class BossBarExtractor {
     }
 
     public static void tick(){
-        if(xbrsq.BossBarExtractor.getBossBars() == null){
+        if(BossBarExtractor.getBossBars() == null){
             return;
         }
         for (Map.Entry<UUID, ClientBossBar> entry : BossBarExtractor.getBossBars().entrySet()) {

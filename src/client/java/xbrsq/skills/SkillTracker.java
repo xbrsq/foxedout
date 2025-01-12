@@ -1,4 +1,6 @@
-package xbrsq;
+package xbrsq.skills;
+
+import xbrsq.FoxedoutClient;
 
 import java.util.ArrayList;
 import java.util.HashMap;

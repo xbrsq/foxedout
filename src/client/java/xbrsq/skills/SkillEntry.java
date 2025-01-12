@@ -1,4 +1,4 @@
-package xbrsq;
+package xbrsq.skills;
 
 public class SkillEntry {
     public String name;
