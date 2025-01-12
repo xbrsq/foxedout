@@ -265,6 +265,11 @@ public class CustomCommands {
                 return disableIntercept;
             }
 
+            case "test": {
+                FoxedoutClient.syncScheduler.addEvent(()->{ChatSender.bufferMessage("Hello There!");}, 20);
+                return disableIntercept;
+            }
+
 
 
             // for dev only, because I keep forgetting to break after the last main command

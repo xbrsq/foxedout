@@ -53,26 +53,21 @@ public class SkillTracker {
     public static boolean parseText(String text){
 
         String enterIgnoreModeRegex = "\\[]=====\\[].*";
-        String exitIgnoreModeRegex = "\\[\\| .*";
+//        String exitIgnoreModeRegex = "\\[\\| .*";
 
         String increaseRegex = "§l(\\w+) increased to §r§a§l(\\w+)§r§f";
         String statsRegex = "(\\w+): (\\w+) XP\\(([0-9,]+)/([0-9,]+)\\).*";
 
 //        Acrobatics: 96 XP(911/2,940)
 
+        // find skill info, and stop parsing skill data for 2 ticks, to avoid "LVL"/
+        // might be able to squash it down to 1 tick, but oh well.
+        // does not affect level up message parsing.
         Pattern pattern = Pattern.compile(enterIgnoreModeRegex);
         Matcher matcher = pattern.matcher(text);
         if(matcher.find()){
-            // enable later, once fixed
-//            chatMode = ChatContext.SKILL_DETAILS;
-            return false;
-        }
-
-        pattern = Pattern.compile(exitIgnoreModeRegex);
-        matcher = pattern.matcher(text);
-
-        if(matcher.find()){
-            chatMode = ChatContext.NORMAL;
+            chatMode = ChatContext.SKILL_DETAILS;
+            FoxedoutClient.syncScheduler.addEvent(()->{SkillTracker.chatMode = ChatContext.NORMAL;}, 2);
             return false;
         }
 

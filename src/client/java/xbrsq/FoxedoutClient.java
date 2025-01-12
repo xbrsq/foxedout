@@ -10,6 +10,7 @@ import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.render.RenderTickCounter;
 import net.fabricmc.fabric.api.client.message.v1.ClientReceiveMessageEvents;
 import xbrsq.chat.ChatSender;
+import xbrsq.scheduler.Scheduler;
 
 import java.util.ArrayList;
 
@@ -29,6 +30,10 @@ public class FoxedoutClient implements ClientModInitializer {
 
 	public static final String version = "0.3.1";
 
+	// sync runs off of server ticks, async runs off of client ticks.
+	public static Scheduler syncScheduler;
+	public static Scheduler asyncScheduler;
+
 	public static void setPos(int x, int y){
 		X = x;
 		Y = y;
@@ -39,6 +44,12 @@ public class FoxedoutClient implements ClientModInitializer {
 		// This entrypoint is suitable for setting up client-specific logic, such as rendering.
 
 
+		// init: -------------------------------------------
+		syncScheduler = new Scheduler();
+		asyncScheduler = new Scheduler();
+
+
+		// setup event handlers: ---------------------------
 
 		// rendering
 		HudRenderCallback.EVENT.register((DrawContext context, RenderTickCounter tickDelta) -> {
@@ -70,10 +81,16 @@ public class FoxedoutClient implements ClientModInitializer {
 			}
 		});
 
-		// Tick functions
+		// Client Tick functions
 		ClientTickEvents.END_CLIENT_TICK.register((client)->{
+			asyncScheduler.tick();
 			BossBarExtractor.tick();
 			ChatSender.tick();
+		});
+
+		// Server Tick functions
+		ClientTickEvents.END_WORLD_TICK.register((world)-> {
+			syncScheduler.tick();
 		});
 
 		// chat message received
