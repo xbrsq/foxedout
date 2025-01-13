@@ -97,4 +97,18 @@ public class CommandController {
         return assertIntegerArgument(parsedMessage, argNum, true);
     }
 
+    public static boolean assertBooleanArgument(String[] parsedMessage, int argNum, boolean useFailMessage){
+        try{
+            Boolean.parseBoolean(parsedMessage[argNum+1]);
+            return true;
+        } catch(Exception E){
+            if(useFailMessage)
+                message("Argument "+argNum+" is not a boolean", MessageType.ERROR);
+            return false;
+        }
+    }
+    public static boolean assertBooleanArgument(String[] parsedMessage, int argNum) {
+        return assertBooleanArgument(parsedMessage, argNum, true);
+    }
+
     }

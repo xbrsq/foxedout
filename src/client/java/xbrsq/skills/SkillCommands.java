@@ -1,21 +1,18 @@
 
-package xbrsq.commands;
+package xbrsq.skills;
 
 import xbrsq.FoxedoutClient;
 import xbrsq.chat.ChatSender;
 import xbrsq.chat.MessageType;
-import xbrsq.skills.SkillEntry;
-import xbrsq.skills.SkillSorter;
-import xbrsq.skills.SkillTracker;
+import xbrsq.commands.Command;
+import xbrsq.commands.CommandModule;
 
 import java.util.ArrayList;
 
 import static xbrsq.commands.CommandController.*;
 
-public class SkillCommands extends CommandModule{
+public class SkillCommands extends CommandModule {
 
-//    public boolean enabled = true;
-//    String[] moduleNames = {"skills", "skill", "s"};
     public SkillCommands(){
         this.name = "SkillCommands";
         this.enabled = true;

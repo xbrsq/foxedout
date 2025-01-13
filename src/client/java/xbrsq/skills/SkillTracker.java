@@ -109,7 +109,7 @@ public class SkillTracker {
 
     public static int parseCommaedInt(String i){
         try {
-            System.out.println(">"+i+"<");
+//            System.out.println(">"+i+"<");
             return Integer.parseInt(i.replace(",",""));
         }
         catch (Exception e){

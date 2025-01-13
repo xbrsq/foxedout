@@ -1,12 +1,14 @@
 
-package xbrsq.commands;
+package xbrsq;
 
-import xbrsq.FoxedoutClient;
 import xbrsq.chat.ChatSender;
 import xbrsq.chat.MessageType;
+import xbrsq.commands.Command;
+import xbrsq.commands.CommandModule;
+
 import static xbrsq.commands.CommandController.*;
 
-public class RootCommands extends CommandModule{
+public class RootCommands extends CommandModule {
 
     public RootCommands(){
         enabled = true;

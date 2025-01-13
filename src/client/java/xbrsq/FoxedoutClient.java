@@ -9,10 +9,12 @@ import net.minecraft.client.font.TextRenderer;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.render.RenderTickCounter;
 import net.fabricmc.fabric.api.client.message.v1.ClientReceiveMessageEvents;
+
+import xbrsq.autosell.AutoSell;
+import xbrsq.autosell.AutoSellCommands;
 import xbrsq.chat.ChatSender;
 import xbrsq.commands.CommandController;
-import xbrsq.commands.RootCommands;
-import xbrsq.commands.SkillCommands;
+import xbrsq.skills.SkillCommands;
 import xbrsq.scheduler.Scheduler;
 import xbrsq.skills.BossBarExtractor;
 import xbrsq.skills.SkillEntry;
@@ -43,6 +45,8 @@ public class FoxedoutClient implements ClientModInitializer {
 
 	public static CommandController commandController;
 
+	public AutoSell autoSell;
+
 	public static void setPos(int x, int y){
 		X = x;
 		Y = y;
@@ -57,6 +61,7 @@ public class FoxedoutClient implements ClientModInitializer {
 		syncScheduler = new Scheduler();
 		asyncScheduler = new Scheduler();
 		commandController = new CommandController();
+		autoSell = new AutoSell();
 
 
 		// setup event handlers: ---------------------------
@@ -140,5 +145,6 @@ public class FoxedoutClient implements ClientModInitializer {
 	void addCommandModules(){
 		commandController.modules.add(new SkillCommands());
 		commandController.modules.add(new RootCommands());
+		commandController.modules.add(new AutoSellCommands(autoSell));
 	}
 }
