@@ -15,9 +15,9 @@ public class AutoSellCommands extends CommandModule {
     public AutoSellCommands(AutoSell autoSell){
         this.seller = autoSell;
 
-        this.name = "SkillCommands";
+        this.name = "Sell";
         this.enabled = true;
-        this.moduleNames = new String[]{"sell", "autosell"};
+        this.moduleNames = new String[]{"sell", "quicksell"};
 
         this.commands = new Command[]{
                 new Command(new String[]{"item"}, (parsedMessage)->{
@@ -32,5 +32,17 @@ public class AutoSellCommands extends CommandModule {
                     return disableIntercept;
                 })
         };
+    }
+
+    public String[] getHelp(){
+        String p = FoxedoutClient.commandController.prefix+this.moduleNames[0]+" ";
+        return new String[]{
+                p+"item <name>: set the quick sell item",
+                p+"item: quickly sell all quicksell items in your inventory",
+        };
+    }
+
+    public String moduleHelp(){
+        return "Quick sell commands";
     }
 }

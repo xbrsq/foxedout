@@ -143,8 +143,8 @@ public class FoxedoutClient implements ClientModInitializer {
 	}
 
 	void addCommandModules(){
-		commandController.modules.add(new SkillCommands());
 		commandController.modules.add(new RootCommands());
+		commandController.modules.add(new SkillCommands());
 		commandController.modules.add(new AutoSellCommands(autoSell));
 	}
 }

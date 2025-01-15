@@ -42,4 +42,13 @@ public class CommandModule {
         return false;
     }
 
+
+
+    public String[] getHelp(){
+        return new String[]{"[ Help not implemented ]"};
+    }
+    public String moduleHelp(){
+        // empty string hides
+        return "";
+    }
 }

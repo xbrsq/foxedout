@@ -14,7 +14,7 @@ import static xbrsq.commands.CommandController.*;
 public class SkillCommands extends CommandModule {
 
     public SkillCommands(){
-        this.name = "SkillCommands";
+        this.name = "Skills";
         this.enabled = true;
         this.moduleNames = new String[]{"skills", "skill", "s"};
 
@@ -202,5 +202,30 @@ public class SkillCommands extends CommandModule {
                     return disableIntercept;
                 }),
         };
+    }
+
+
+    public String[] getHelp(){
+        String p = FoxedoutClient.commandController.prefix+this.moduleNames[0]+" ";
+        return new String[]{
+                p+"movex <pos>: move skills display x position",
+                p+"movey <pos>: move skills display y position",
+                p+"render: toggle skills display rendering",
+                p+"skillmessages: toggle hiding skill levelup messages",
+                p+"clearcache: clear locally stored skill data",
+                p+"focus <skill>: focus on skill, only displaying it",
+                p+"highlight <skill>: highlight skill",
+                p+"sort <name | level | percent | time>: sort skills based on given column",
+                p+"sort <asc | desc>: sort skills ascending/descending",
+                p+"pin <skill>: pin skill. Pinned skills are shown before unpinned.",
+                p+"limit <value>: limit display maximum entries",
+                p+"refresh: refresh skill data",
+                p+"lookup: looks up data of another player. Only works if close.",
+
+        };
+    }
+
+    public String moduleHelp(){
+        return "commands about local skills recording & displaying";
     }
 }

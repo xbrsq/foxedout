@@ -1,6 +1,7 @@
 package xbrsq.commands;
 
 import org.jetbrains.annotations.NotNull;
+import xbrsq.FoxedoutClient;
 import xbrsq.chat.ChatSender;
 import xbrsq.chat.MessageType;
 
@@ -48,6 +49,17 @@ public class CommandController {
         }
         message("Unknown module: "+parsedMessage[0]+".");
         return disableIntercept;
+    }
+
+    public String[] getHelp() {
+        StringBuilder rtrn= new StringBuilder("\n");
+        for(CommandModule mod: modules){
+            String str = mod.moduleHelp();
+            if(str.isEmpty())
+                continue;
+            rtrn.append(FoxedoutClient.commandController.prefix).append(mod.name).append(": ").append(str).append("\n");
+        }
+        return rtrn.toString().split("\n");
     }
 
     public static void immediateMessage(String s) {
