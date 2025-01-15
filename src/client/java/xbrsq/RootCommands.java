@@ -71,6 +71,10 @@ public class RootCommands extends CommandModule {
                     }, 20);
                     return disableIntercept;
                 }),
+                new Command("version", (parsedMessage) -> {
+                    message("FoxedOut "+FoxedoutClient.version);
+                    return disableIntercept;
+                }),
         };
     }
 

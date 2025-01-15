@@ -4,6 +4,10 @@ import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
 import net.fabricmc.fabric.api.client.message.v1.ClientSendMessageEvents;
 import net.fabricmc.fabric.api.client.rendering.v1.HudRenderCallback;
+import net.fabricmc.loader.api.FabricLoader;
+import net.fabricmc.loader.api.ModContainer;
+import net.fabricmc.loader.api.Version;
+import net.fabricmc.loader.api.metadata.ModMetadata;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.font.TextRenderer;
 import net.minecraft.client.gui.DrawContext;
@@ -37,7 +41,7 @@ public class FoxedoutClient implements ClientModInitializer {
 
 	public static boolean doRender = true;
 
-	public static final String version = "0.3.1";
+	public static String version = "0.3.1";
 
 	// sync runs off of server ticks, async runs off of client ticks.
 	public static Scheduler syncScheduler;
@@ -62,6 +66,15 @@ public class FoxedoutClient implements ClientModInitializer {
 		asyncScheduler = new Scheduler();
 		commandController = new CommandController();
 		autoSell = new AutoSell();
+
+
+		version = FabricLoader.getInstance()
+				.getModContainer("foxedout")
+				.map(ModContainer::getMetadata)
+				.map(ModMetadata::getVersion)
+				.map(Version::getFriendlyString)
+				.orElse("v?.?.?");
+
 
 
 		// setup event handlers: ---------------------------
