@@ -27,6 +27,10 @@ public class RootCommands extends CommandModule {
                     int x = 0 / 0;
                     return STOP;
                 }),
+
+                new ColoredMessageCommand(new String[]{"rainbow", "rb"}, new String[]{"&c", "&6", "&e", "&a", "&3", "&5", "&d"}),
+                new ColoredMessageCommand(new String[]{"trans", "tr"}, new String[]{"&b", "&d", "&f", "&d", "&b"}),
+
                 new Command("owo", (parsedMessage) -> {
                     message("OwO, what's this?");
                     return STOP;

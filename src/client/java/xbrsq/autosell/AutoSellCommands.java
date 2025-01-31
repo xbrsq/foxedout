@@ -38,7 +38,7 @@ public class AutoSellCommands extends CommandModule {
         String p = FoxedoutClient.commandController.prefix+this.moduleNames[0]+" ";
         return new String[]{
                 p+"item <name>: set the quick sell item",
-                p+"item: quickly sell all quicksell items in your inventory",
+                p+": quickly sell all quicksell items in your inventory",
         };
     }
 

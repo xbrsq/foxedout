@@ -15,9 +15,6 @@
 	"icon": "assets/foxedout/icon.png",
 	"environment": "*",
 	"entrypoints": {
-		"main": [
-			"xbrsq.Foxedout"
-		],
 		"client": [
 			"xbrsq.FoxedoutClient"
 		]
