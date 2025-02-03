@@ -49,7 +49,7 @@ public class FoxedoutClient implements ClientModInitializer {
 
 	public static CommandController commandController;
 
-	public AutoSell autoSell;
+	public static AutoSell autoSell;
 
 	public static void setPos(int x, int y){
 		X = x;
@@ -126,6 +126,7 @@ public class FoxedoutClient implements ClientModInitializer {
 			if(SkillTracker.parseText(text.getString())){
 				return !hideSkillMessages; // hide message
 			}
+			autoSell.parseText(text.getString());
 			return true;
 		});
 

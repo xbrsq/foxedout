@@ -30,15 +30,22 @@ public class AutoSellCommands extends CommandModule {
                 new Command(new String[]{""}, (parsedMessage)->{
                     ChatSender.broadcastCommand("sellall "+seller.item);
                     return disableIntercept;
-                })
+                }),
+                new Command("repeat", (parsedMessage)->{
+                    FoxedoutClient.syncScheduler.addRepeating(()->{
+                        ChatSender.broadcastCommand("sellall "+seller.item);
+                    }, 5, 9999);
+                    return disableIntercept;
+                }),
         };
     }
 
     public String[] getHelp(){
-        String p = FoxedoutClient.commandController.prefix+this.moduleNames[0]+" ";
+        String p = FoxedoutClient.commandController.prefix+this.moduleNames[0];
         return new String[]{
-                p+"item <name>: set the quick sell item",
+                p+" item <name>: set the quicksell item",
                 p+": quickly sell all quicksell items in your inventory",
+                p+" repeat: sell all quicksell items repeatedly until empty",
         };
     }
 
