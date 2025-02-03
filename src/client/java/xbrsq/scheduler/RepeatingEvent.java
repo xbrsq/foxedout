@@ -18,9 +18,9 @@ public class RepeatingEvent extends ScheduledEvent{
 
     @Override
     public boolean doRemove(int time){
+        numRepeats--;
         if(numRepeats<=0)
             return true;
-        numRepeats--;
         this.time += this.repeatTime;
         return false;
     }

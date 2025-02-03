@@ -19,13 +19,7 @@
 			"xbrsq.FoxedoutClient"
 		]
 	},
-	"mixins": [
-		"foxedout.mixins.json",
-		{
-			"config": "foxedout.client.mixins.json",
-			"environment": "client"
-		}
-	],
+	"mixins": [],
 	"depends": {
 		"fabricloader": ">=0.16.9",
 		"minecraft": "~1.21.4",

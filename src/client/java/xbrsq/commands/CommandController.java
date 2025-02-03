@@ -13,14 +13,13 @@ public class CommandController {
     public static final boolean PASS = true;
     public static final boolean STOP = false;
 
-    public static boolean disableIntercept = STOP;
 
     public String prefix = ".";
 
     public String[][] helpMessages = {{"Help not created yet"}};
 
-
     // disable to force all chat messages to be allowed through
+    public static boolean disableIntercept = STOP;
 
     public final LinkedList<CommandModule> modules = new LinkedList<>();
 

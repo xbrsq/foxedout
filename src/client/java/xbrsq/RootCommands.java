@@ -6,8 +6,6 @@ import xbrsq.chat.MessageType;
 import xbrsq.commands.Command;
 import xbrsq.commands.CommandModule;
 
-import java.util.Objects;
-
 import static xbrsq.commands.CommandController.*;
 
 public class RootCommands extends CommandModule {
@@ -68,11 +66,18 @@ public class RootCommands extends CommandModule {
 
                     return disableIntercept;
                 }),
+                new Command("modules", (parsedMessage)->{
+                    message("Modules:");
+                    for(CommandModule mod: FoxedoutClient.commandController.modules){
+                        message(mod.name);
+                    }
+                    return disableIntercept;
+                }),
 
                 new Command("test", (parsedMessage) -> {
-                    FoxedoutClient.syncScheduler.addEvent(() -> {
+                    FoxedoutClient.syncScheduler.addRepeating(() -> {
                         ChatSender.bufferMessage("Hello There!");
-                    }, 20);
+                    }, 10, 10);
                     return disableIntercept;
                 }),
                 new Command("version", (parsedMessage) -> {
